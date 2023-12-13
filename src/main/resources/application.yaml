@@ -1,0 +1,85 @@
+#-----------------------------------
+--- # Application
+#-----------------------------------
+
+spring:
+  application:
+    name: APP_NAME
+  profiles:
+    active:
+      - "@spring.profiles.active@"
+  main:
+    lazy-initialization: false
+server:
+  port: 8081
+
+--- ## Production
+
+spring:
+  config:
+    activate:
+      on-profile: "production"
+  main:
+    lazy-initialization: true
+
+#-----------------------------------
+--- # i18n & L10n
+#-----------------------------------
+
+spring:
+  messages:
+    encoding: UTF-8
+    basename: i18n/messages
+
+#-----------------------------------
+--- # Logging
+#-----------------------------------
+
+logging:
+  level:
+    com:
+      tujuhsembilan: TRACE
+
+--- ## Production
+
+spring:
+  config:
+    activate:
+      on-profile: "production"
+logging:
+  level:
+    com:
+      tujuhsembilan: INFO
+
+#-----------------------------------   
+--- # Miscellanous
+#-----------------------------------
+
+spring:
+  jpa:
+    database: POSTGRESQL
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+
+    
+  datasource:
+    url: jdbc:postgresql://cloudias79.com:5545/new_db_talentcenter_dev
+    username: usrtalentcenter
+    password: m1QVs3zKymgPduz
+    driverClassName: org.postgresql.Driver
+  sql:
+    init:
+      platform: postgres
+
+logging:
+  level:
+    org:
+      hibernate:
+        SQL: DEBUG
+        type:
+          descriptor:
+            sql: TRACE
+# # -----------------------------------
+# --- #
+# # -----------------------------------
