@@ -1,4 +1,4 @@
-package com.tujuhsembilan.app.dto;
+package com.tujuhsembilan.app.dto.error;
 
 import lombok.AllArgsConstructor;
 import lombok.Data;

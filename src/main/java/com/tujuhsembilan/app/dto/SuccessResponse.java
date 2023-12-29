@@ -2,6 +2,7 @@ package com.tujuhsembilan.app.dto;
 
 import org.springframework.http.HttpStatus;
 
+import jakarta.annotation.Nullable;
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
@@ -15,5 +16,6 @@ public class SuccessResponse<T>{
     
     private HttpStatus status;
     
+    @Nullable
     private T data;
 }

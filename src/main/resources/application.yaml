@@ -19,9 +19,10 @@ spring:
   config:
     activate:
       on-profile: "production"
+    
   main:
     lazy-initialization: true
-
+    
 #-----------------------------------
 --- # i18n & L10n
 #-----------------------------------

@@ -3,10 +3,8 @@ package com.tujuhsembilan.app.model;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-import org.checkerframework.checker.units.qual.C;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
+import org.bouncycastle.util.Times;
+import org.hibernate.annotations.ManyToAny;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -15,58 +13,40 @@ import org.springframework.data.annotation.LastModifiedDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
+import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
+import lombok.NonNull;
 import lombok.Setter;
 
-@Getter
-@Setter
+
+@Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "\"client\"")
-public class Client {
+@Getter
+@Setter
+@Table(name = "most_frequent_skillset")
+public class MostFrequentSkillset {
     
     @Id
-    @Column(name = "client_id")
-    private UUID clientId;
-    
-    @ManyToOne
-    @JoinColumn(name = "client_position_id")
-    private ClientPosition clientPosition;
-    
+    @Column(name = "most_frequent_skillset_id")
+    @NonNull
+    private UUID mostFrequentSkillsetId;
+
     @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "skillset_id")
+    private Skillset skillset;
 
-    private String clientName;
-
-    private String gender;
-
-    @Column(name = "birth_date")
-    private Timestamp birthDate;
-
-    private String email;
-
-    @Column(name = "agency_name")
-    private String agencyName;
-
-    @Column(name = "agency_address")
-    private String agencyAddress;
-
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @Column(name = "counter")
+    private Integer counter;
 
     @CreatedBy
     @Column(name = "created_by")
@@ -76,13 +56,13 @@ public class Client {
     @Column(name = "last_modified_by")
     private String lastModifiedBy;
 
-    @Column(name = "created_time")
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "created_time")
     private Timestamp createdTime;
 
-    @Column(name = "last_modified_time")
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "last_modified_time")
     private Timestamp lastModifiedTime;
 }

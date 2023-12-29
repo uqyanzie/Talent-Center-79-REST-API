@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-import com.tujuhsembilan.app.dto.ApiError;
+import com.tujuhsembilan.app.dto.error.ApiError;
 
 import jakarta.persistence.EntityNotFoundException;
 

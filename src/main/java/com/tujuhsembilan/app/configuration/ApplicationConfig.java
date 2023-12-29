@@ -13,6 +13,7 @@ import org.springframework.boot.ApplicationRunner;
 import org.springframework.boot.autoconfigure.jackson.Jackson2ObjectMapperBuilderCustomizer;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configurers.AbstractHttpConfigurer;
@@ -28,7 +29,14 @@ import com.fasterxml.jackson.datatype.jsr310.ser.LocalTimeSerializer;
 import com.toedter.spring.hateoas.jsonapi.JsonApiConfiguration;
 import com.tujuhsembilan.app.model.SampleModel;
 import com.tujuhsembilan.app.repository.SampleRepository;
-import com.tujuhsembilan.app.service.UserService;
+import com.tujuhsembilan.app.service.AuthenticationService;
+import com.tujuhsembilan.app.service.ClientService;
+import com.tujuhsembilan.app.service.JWTService;
+import com.tujuhsembilan.app.service.SkillsetService;
+import com.tujuhsembilan.app.service.impl.AuthenticationServiceImpl;
+import com.tujuhsembilan.app.service.impl.ClientServiceImpl;
+import com.tujuhsembilan.app.service.impl.JWTServiceImpl;
+import com.tujuhsembilan.app.service.impl.SkillsetServiceImpl;
 
 import lib.i18n.utility.MessageUtil;
 import lombok.RequiredArgsConstructor;
@@ -66,14 +74,14 @@ public class ApplicationConfig {
     return new ModelMapper();
   }
 
-  @Bean
-  public SecurityFilterChain configure(HttpSecurity http) throws Exception {
-    http
-        .authorizeHttpRequests(config -> config
-            .anyRequest().permitAll())
-        .csrf(AbstractHttpConfigurer::disable);
-    return http.build();
-  }
+  // @Bean
+  // public SecurityFilterChain configure(HttpSecurity http) throws Exception {
+  //   http
+  //       .authorizeHttpRequests(config -> config
+  //           .anyRequest().permitAll())
+  //       .csrf(AbstractHttpConfigurer::disable);
+  //   return http.build();
+  // }
 
   @Bean
   public Jackson2ObjectMapperBuilderCustomizer jsonCustomizer() {
@@ -117,8 +125,23 @@ public class ApplicationConfig {
             });
   }
 
+  // @Bean
+  // public JWTService jwtService() {
+  //   return new JWTServiceImpl();
+  // }
+  
+  // @Bean
+  // public AuthenticationManager authenticationManager(){
+  //   return new AuthenticationManager();
+  // }
+
   @Bean
-  public UserService userService() {
-    return new UserService();
+  public ClientService clientService() {
+    return new ClientServiceImpl();
+  }
+
+  @Bean
+  public SkillsetService skillSetService(){
+    return new SkillsetServiceImpl();
   }
 }

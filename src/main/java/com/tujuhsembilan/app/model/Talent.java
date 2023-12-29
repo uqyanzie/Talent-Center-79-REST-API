@@ -3,10 +3,6 @@ package com.tujuhsembilan.app.model;
 import java.sql.Timestamp;
 import java.util.UUID;
 
-import org.checkerframework.checker.units.qual.C;
-import org.hibernate.annotations.Cascade;
-import org.hibernate.annotations.Fetch;
-import org.hibernate.annotations.FetchMode;
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.LastModifiedBy;
@@ -14,14 +10,10 @@ import org.springframework.data.annotation.LastModifiedDate;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.FetchType;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
-import jakarta.persistence.PrimaryKeyJoinColumn;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -30,43 +22,60 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+@Entity
 @Getter
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Entity
-@Table(name = "\"client\"")
-public class Client {
+@Table(name = "talent")
+public class Talent {
     
     @Id
-    @Column(name = "client_id")
-    private UUID clientId;
-    
+    private UUID talentId;
+
     @ManyToOne
-    @JoinColumn(name = "client_position_id")
-    private ClientPosition clientPosition;
-    
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private User user;
+    @JoinColumn(name = "talent_level_id")
+    private TalentLevel talentLevel;
 
-    private String clientName;
+    @ManyToOne
+    @JoinColumn(name = "talent_status_id")
+    private TalentStatus talentStatus;
 
-    private String gender;
+    @ManyToOne
+    @JoinColumn(name = "employee_status_id")
+    private EmployeeStatus employeeStatus;
+
+    private String talentName;
+
+    private String talentPhotoFilename;
+
+    private String employeeNumber;
+
+    private Character gender;
 
     @Column(name = "birth_date")
     private Timestamp birthDate;
 
+    private String talentDescription;
+
+    private String talentCvFilename;
+
+    private Integer experience;
+
     private String email;
 
-    @Column(name = "agency_name")
-    private String agencyName;
+    @Column(name = "cellphone")
+    private String cellphone;
 
-    @Column(name = "agency_address")
-    private String agencyAddress;
+    private String biographyVideoUrl;
 
-    @Column(name = "is_active")
-    private Boolean isActive;
+    private boolean isAddToListEnable;
+
+    private boolean talentAvailability;
+
+    private boolean isActive;
+
+    private Integer totalProjectCompleted;
 
     @CreatedBy
     @Column(name = "created_by")

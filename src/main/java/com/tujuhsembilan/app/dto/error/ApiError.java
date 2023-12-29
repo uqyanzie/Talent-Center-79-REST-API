@@ -1,4 +1,4 @@
-package com.tujuhsembilan.app.dto;
+package com.tujuhsembilan.app.dto.error;
 
 import java.time.LocalDateTime;
 
