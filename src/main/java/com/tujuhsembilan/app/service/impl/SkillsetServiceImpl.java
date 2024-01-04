@@ -1,5 +1,6 @@
 package com.tujuhsembilan.app.service.impl;
 
+import java.sql.Timestamp;
 import java.util.List;
 import java.util.UUID;
 
@@ -54,7 +55,20 @@ public class SkillsetServiceImpl implements SkillsetService{
     public void updateTagsCounter(UpdateTagsCounterRequest request) throws NullPointerException{
             
         for(TagDto tag : request.getTags()){
-            MostFrequentSkillset tagItem= mostFrequentSkillSetRepository.findByMostFrequentSkillsetId(UUID.fromString(tag.getTagsId())).orElseThrow( () -> new NullPointerException("Tag not found"));
+
+            Skillset skillset = skillsetRepository.findById(UUID.fromString(tag.getTagsId())).orElseThrow( () -> new NullPointerException("Tag not found"));
+
+            MostFrequentSkillset tagItem = mostFrequentSkillSetRepository.findBySkillset(skillset).orElseGet(() -> {
+                MostFrequentSkillset newTagItem = new MostFrequentSkillset();
+                newTagItem.setMostFrequentSkillsetId(UUID.randomUUID());
+                newTagItem.setCreatedBy("system");
+                newTagItem.setLastModifiedBy("system");
+                newTagItem.setCreatedTime(Timestamp.valueOf(java.time.LocalDateTime.now()));
+                newTagItem.setLastModifiedTime(Timestamp.valueOf(java.time.LocalDateTime.now()));
+                newTagItem.setSkillset(skillset);
+                newTagItem.setCounter(0);
+                return newTagItem;
+            });
 
             tagItem.setCounter(tagItem.getCounter() + 1);
             mostFrequentSkillSetRepository.save(tagItem);

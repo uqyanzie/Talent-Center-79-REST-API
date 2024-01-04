@@ -1,7 +1,6 @@
-package com.tujuhsembilan.app.dto.talent;
+package com.tujuhsembilan.app.dto.skillset;
 
 import java.util.List;
-import java.util.Set;
 
 import com.tujuhsembilan.app.model.Position;
 
@@ -11,13 +10,13 @@ import lombok.Data;
 import lombok.NoArgsConstructor;
 
 @Data
+@Builder
 @AllArgsConstructor
 @NoArgsConstructor
-@Builder
 public class PositionResponse {
-    
-    private String positionId;
 
+    private String positionId;
+    
     private String positionName;
 
     public static List<PositionResponse> fromEntityList(List<Position> positions) {
@@ -25,7 +24,7 @@ public class PositionResponse {
             return PositionResponse.builder()
                 .positionId(position.getPositionId().toString())
                 .positionName(position.getPositionName())
-                .build();            
+                .build();
         }).toList();
     }
 }

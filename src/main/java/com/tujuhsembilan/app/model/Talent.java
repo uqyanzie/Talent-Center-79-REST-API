@@ -1,6 +1,8 @@
 package com.tujuhsembilan.app.model;
 
 import java.sql.Timestamp;
+import java.util.List;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedBy;
@@ -13,7 +15,7 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
-import jakarta.persistence.OneToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -44,6 +46,12 @@ public class Talent {
     @ManyToOne
     @JoinColumn(name = "employee_status_id")
     private EmployeeStatus employeeStatus;
+
+    @OneToMany(mappedBy = "talent")
+    Set<TalentSkillset> talentSkillsets;
+
+    @OneToMany(mappedBy = "talent")
+    Set<TalentPosition> talentPositions;
 
     private String talentName;
 
@@ -94,4 +102,5 @@ public class Talent {
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
     private Timestamp lastModifiedTime;
+
 }

@@ -50,8 +50,10 @@ public class SecurityConfiguration {
                 .requestMatchers("/api/tags-management/tags-option-lists").permitAll()
                 .requestMatchers("/api/master-management/client-position-option-lists").permitAll()
                 .requestMatchers("/api/tags-management/tags").permitAll()
+                .requestMatchers("/api/talent-management/talents").permitAll()
                 .requestMatchers("/api/**").permitAll()
-                .anyRequest().authenticated()
+                .anyRequest().permitAll()
+                // .anyRequest().authenticated()
             )
             .exceptionHandling(e -> e.authenticationEntryPoint(point))
             .sessionManagement(session -> session.sessionCreationPolicy(SessionCreationPolicy.STATELESS));

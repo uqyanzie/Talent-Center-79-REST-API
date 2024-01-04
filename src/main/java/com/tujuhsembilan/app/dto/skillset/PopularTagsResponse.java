@@ -28,7 +28,7 @@ public class PopularTagsResponse {
         
         return tags.stream().map(tag -> {
             return PopularTagsResponse.builder()
-                .tagsId(tag.getMostFrequentSkillsetId().toString())
+                .tagsId(tag.getSkillset().getSkillsetId().toString())
                 .tagsName(Objects.isNull(tag.getSkillset())? null : tag.getSkillset().getSkillsetName())
                 .build();
         }).toList();

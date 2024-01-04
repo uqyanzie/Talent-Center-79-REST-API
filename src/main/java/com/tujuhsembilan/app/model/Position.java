@@ -1,6 +1,7 @@
 package com.tujuhsembilan.app.model;
 
 import java.sql.Timestamp;
+import java.util.Set;
 import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedBy;
@@ -11,6 +12,7 @@ import org.springframework.data.annotation.LastModifiedDate;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.Id;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -34,6 +36,9 @@ public class Position {
 
     @Column(name = "is_active")
     private boolean isActive;
+
+    @OneToMany(mappedBy = "position")
+    Set<TalentPosition> talentPositions;
 
     @CreatedBy
     @Column(name = "created_by")

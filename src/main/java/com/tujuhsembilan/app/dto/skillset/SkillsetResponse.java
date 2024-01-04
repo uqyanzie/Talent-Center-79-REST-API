@@ -15,14 +15,14 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class SkillsetResponse {
     
-    private String skillSetid;
+    private String skillSetId;
 
     private String skillSetName;
 
     public static List<SkillsetResponse> fromEntityList(List<Skillset> skillsets) {
         return skillsets.stream().map(skillset -> {
             return SkillsetResponse.builder()
-                .skillSetid(skillset.getSkillsetId().toString())
+                .skillSetId(skillset.getSkillsetId().toString())
                 .skillSetName(skillset.getSkillsetName())
                 .build();
         }).toList();

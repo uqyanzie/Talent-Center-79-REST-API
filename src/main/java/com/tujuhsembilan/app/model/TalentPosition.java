@@ -1,8 +1,6 @@
 package com.tujuhsembilan.app.model;
 
 import java.sql.Timestamp;
-import java.util.Set;
-import java.util.UUID;
 
 import org.springframework.data.annotation.CreatedBy;
 import org.springframework.data.annotation.CreatedDate;
@@ -10,12 +8,12 @@ import org.springframework.data.annotation.LastModifiedBy;
 import org.springframework.data.annotation.LastModifiedDate;
 
 import jakarta.persistence.Column;
+import jakarta.persistence.EmbeddedId;
 import jakarta.persistence.Entity;
-import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
+import jakarta.persistence.MapsId;
 import jakarta.persistence.OneToMany;
-import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
@@ -28,25 +26,20 @@ import lombok.Setter;
 @Setter
 @AllArgsConstructor
 @NoArgsConstructor
-@Table(name = "skillset")
-public class Skillset {
-    
-    @Id
-    @Column(name = "skillset_id")
-    private UUID skillsetId;
+public class TalentPosition {
+
+    @EmbeddedId
+    private TalentPositionKey talentPositionId;
 
     @ManyToOne
-    @JoinColumn(name = "skillset_type_id")
-    private SkillsetType skillsetType;
-
-    @OneToMany(mappedBy = "skillset")
-    Set<TalentSkillset> talentSkillsets;
-
-    @Column(name = "skillset_name")
-    private String skillsetName;
-
-    @Column(name = "is_active")
-    private Boolean isActive;
+    @MapsId("talentId")
+    @JoinColumn(name = "talent_id")
+    private Talent talent;
+    
+    @ManyToOne
+    @MapsId("positionId")
+    @JoinColumn(name = "position_id")
+    private Position position;    
 
     @CreatedBy
     @Column(name = "created_by")
@@ -56,13 +49,13 @@ public class Skillset {
     @Column(name = "last_modified_by")
     private String lastModifiedBy;
 
+    @Column(name = "created_time")
     @CreatedDate
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "created_time")
     private Timestamp createdTime;
 
+    @Column(name = "last_modified_time")
     @LastModifiedDate
     @Temporal(TemporalType.TIMESTAMP)
-    @Column(name = "last_modified_time")
-    private Timestamp lastModifiedTime;
+    private Timestamp lastModifiedTime;       
 }
