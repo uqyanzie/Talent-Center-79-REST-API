@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -13,6 +12,7 @@ import org.springframework.web.server.ResponseStatusException;
 import com.tujuhsembilan.app.dto.SuccessResponse;
 import com.tujuhsembilan.app.dto.talent.PositionResponse;
 import com.tujuhsembilan.app.dto.talent.TalentLevelResponse;
+import com.tujuhsembilan.app.dto.talent.TalentListFilterDto;
 import com.tujuhsembilan.app.dto.talent.TalentResponse;
 import com.tujuhsembilan.app.dto.talent.TalentYOEResponse;
 import com.tujuhsembilan.app.service.TalentService;
@@ -90,8 +90,10 @@ public class TalentController {
     @GetMapping("/api/talent-management/talents")
     public ResponseEntity<Page<TalentResponse>> getTalentList(@RequestParam(required = false) List<String> tags, @RequestParam(required = false) List<String> positions, @RequestParam(required = false) List<String> talentLevels, @RequestParam(required = false) List<Integer> experiences, @RequestParam Integer pageSize, @RequestParam Integer pageNumber, @RequestParam(required = false) String sort, @RequestParam(required = false) String order) {
         
+        TalentListFilterDto talentListFilterDto = new TalentListFilterDto(tags, positions, talentLevels, experiences, pageSize, pageNumber, sort, order);
+
         try{
-            Page<TalentResponse> response = talentService.getTalentPage(tags, positions, talentLevels, experiences, pageNumber, pageSize, sort, order);
+            Page<TalentResponse> response = talentService.getTalentPage(talentListFilterDto);
 
             return ResponseEntity.ok(response);
             

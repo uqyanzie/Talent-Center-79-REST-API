@@ -75,63 +75,63 @@ public class TalentServiceImpl implements TalentService {
         return TalentYOEResponse.fromEntityList(talentYOEList);
     }
 
-    public Page<TalentResponse> getTalentPage(List<String> tagNames, List<String> positionNames, List<String> talentLevelNames, List<Integer> talentYOE, Integer pageNumber, Integer pageSize, String sort, String order){
+    public Page<TalentResponse> getTalentPage(TalentListFilterDto filterDto){
         
         Specification<Talent> skillFilter = Specification.where(null);
         Specification<Talent> positionFilter = Specification.where(null);
         Specification<Talent> talentLevelFilter = Specification.where(null);
         Specification<Talent> talentYOEFilter = Specification.where(null);
 
-        if(!ObjectUtils.isEmpty(tagNames)) {
+        if(!ObjectUtils.isEmpty(filterDto.getTags())) {
             skillFilter = (r, q, cb) -> {
                 Join<Talent, TalentSkillset> tsJoins = r.join("talentSkillsets");
                 Join<TalentSkillset, Skillset> ssJoin = tsJoins.join("skillset");
 
-                return ssJoin.get("skillsetName").in(Arrays.asList(tagNames.toArray()));
+                return ssJoin.get("skillsetName").in(Arrays.asList(filterDto.getTags().toArray()));
             };
         }
 
-        if(!ObjectUtils.isEmpty(positionNames)) {
+        if(!ObjectUtils.isEmpty(filterDto.getPositions())) {
             positionFilter = (r, q, cb) -> {
                 Join<Talent, TalentPosition> tpJoins = r.join("talentPositions");
                 Join<TalentPosition, Position> pJoin = tpJoins.join("position");
 
-                return pJoin.get("positionName").in(Arrays.asList(positionNames.toArray()));
+                return pJoin.get("positionName").in(Arrays.asList(filterDto.getPositions().toArray()));
             };
         }
 
-        if(!ObjectUtils.isEmpty(talentLevelNames)) {
+        if(!ObjectUtils.isEmpty(filterDto.getTalentLevels())) {
             talentLevelFilter = (r, q, cb) -> {
                 Join<Talent, TalentLevel> tlJoins = r.join("talentLevel");
 
-                return tlJoins.get("talentLevelName").in(Arrays.asList(talentLevelNames.toArray()));
+                return tlJoins.get("talentLevelName").in(Arrays.asList(filterDto.getTalentLevels().toArray()));
             };
         }
 
-        if(!ObjectUtils.isEmpty(talentYOE)) {
+        if(!ObjectUtils.isEmpty(filterDto.getExperiences())) {
             talentYOEFilter = (r, q, cb) -> {
-                return r.get("experience").in(Arrays.asList(talentYOE.toArray()));
+                return r.get("experience").in(Arrays.asList(filterDto.getExperiences().toArray()));
             };
         }
         
-        if(sort == null) {
-            sort = "experience";
+        if(filterDto.getSort() == null) {
+            filterDto.setSort("experience"); 
         }
 
-        if(order == null) {
-            order = "desc";
+        if(filterDto.getOrder() == null) {
+            filterDto.setOrder("desc");
         }
 
-        Sort sortSettings = Sort.by(sort);
-        if (order.equals("asc")) {
+        Sort sortSettings = Sort.by(filterDto.getSort());
+        if (filterDto.getOrder().equals("asc")) {
             sortSettings = sortSettings.ascending();
-        } else if (order.equals("desc")) {
+        } else if (filterDto.getOrder().equals("desc")) {
             sortSettings = sortSettings.descending();
         } else {
             throw new IllegalArgumentException("Invalid sort order");
         }
 
-        Pageable pageSettings = PageRequest.of(pageNumber, pageSize, sortSettings);
+        Pageable pageSettings = PageRequest.of(filterDto.getPageNumber(), filterDto.getPageSize(), sortSettings);
 
         Page<Talent> talentList = talentRepository.findAll(
             Specification.where(skillFilter).and(positionFilter).and(talentLevelFilter).and(talentYOEFilter),

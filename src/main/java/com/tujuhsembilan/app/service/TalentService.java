@@ -8,6 +8,7 @@ import org.springframework.hateoas.PagedModel;
 
 import com.tujuhsembilan.app.dto.talent.PositionResponse;
 import com.tujuhsembilan.app.dto.talent.TalentLevelResponse;
+import com.tujuhsembilan.app.dto.talent.TalentListFilterDto;
 import com.tujuhsembilan.app.dto.talent.TalentResponse;
 import com.tujuhsembilan.app.dto.talent.TalentYOEResponse;
 import com.tujuhsembilan.app.model.Talent;
@@ -20,5 +21,5 @@ public interface TalentService {
 
     List<TalentYOEResponse> getTalentYOEList();
 
-    Page<TalentResponse> getTalentPage(List<String> tags, List<String> positions, List<String> talentLevels, List<Integer> talentYOE, Integer page, Integer size, String sort, String order);
+    Page<TalentResponse> getTalentPage(TalentListFilterDto filterDto);
 } 
