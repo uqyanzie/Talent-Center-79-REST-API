@@ -10,11 +10,13 @@ import com.tujuhsembilan.app.model.ClientPosition;
 import com.tujuhsembilan.app.repository.ClientPositionRepository;
 import com.tujuhsembilan.app.service.ClientService;
 
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ClientServiceImpl implements ClientService{
     
-    @Autowired
-    private ClientPositionRepository clientPositionRepository;
+    private final ClientPositionRepository clientPositionRepository;
 
     public List<ClientPositionResponse> getClientPositionList() {
 

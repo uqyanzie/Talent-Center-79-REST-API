@@ -21,18 +21,17 @@ import com.tujuhsembilan.app.repository.SkillsetTypeRepository;
 import com.tujuhsembilan.app.service.SkillsetService;
 
 import jakarta.transaction.Transactional;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SkillsetServiceImpl implements SkillsetService{
     
-    @Autowired
-    private MostFrequentSkillSetRepository mostFrequentSkillSetRepository;
+    private final MostFrequentSkillSetRepository mostFrequentSkillSetRepository;
 
-    @Autowired
-    private SkillsetRepository skillsetRepository;
+    private final SkillsetRepository skillsetRepository;
 
-    @Autowired
-    private SkillsetTypeRepository skillsetTypeRepository;
+    private final SkillsetTypeRepository skillsetTypeRepository;
     
     @Transactional
     public List<PopularTagsResponse> getTop5PopularTags(){

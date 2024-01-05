@@ -5,8 +5,9 @@ import org.springframework.web.server.ResponseStatusException;
 
 import com.tujuhsembilan.app.dto.SuccessResponse;
 import com.tujuhsembilan.app.dto.client.ClientPositionResponse;
-import com.tujuhsembilan.app.dto.skillset.PopularTagsResponse;
 import com.tujuhsembilan.app.service.ClientService;
+
+import lombok.RequiredArgsConstructor;
 
 import java.util.List;
 
@@ -18,10 +19,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class ClientController {
 
-    @Autowired
-    private ClientService clientService;
+    private final ClientService clientService;
 
     @GetMapping("/api/master-management/client-position-option-lists")
     public ResponseEntity<SuccessResponse<List<ClientPositionResponse>>> getClientPositionList() {

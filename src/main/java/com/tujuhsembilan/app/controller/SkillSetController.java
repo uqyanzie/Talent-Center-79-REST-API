@@ -17,6 +17,7 @@ import com.tujuhsembilan.app.dto.skillset.UpdateTagsCounterRequest;
 import com.tujuhsembilan.app.service.SkillsetService;
 
 import io.jsonwebtoken.lang.Objects;
+import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -26,10 +27,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 
 
 @RestController
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class SkillSetController {
 
-    @Autowired
-    private SkillsetService skillSetService;
+    private final SkillsetService skillSetService;
 
     @GetMapping("/api/tags-management/popular-tags-option-lists")
     public ResponseEntity<SuccessResponse<List<PopularTagsResponse>>> getTop5PopularTagsList() {

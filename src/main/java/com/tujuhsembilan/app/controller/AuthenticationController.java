@@ -1,7 +1,6 @@
 package com.tujuhsembilan.app.controller;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.ComponentScan;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +17,13 @@ import com.tujuhsembilan.app.dto.auth.UserRegisterResponse;
 import com.tujuhsembilan.app.dto.auth.UserSigninRequest;
 import com.tujuhsembilan.app.service.AuthenticationService;
 
+import lombok.RequiredArgsConstructor;
+
 @RestController
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AuthenticationController {
     
-    @Autowired
-    private AuthenticationService authenticationService;
+    private final AuthenticationService authenticationService;
 
    @PostMapping(
         path = "/api/user-management/users/register",

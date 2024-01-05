@@ -134,14 +134,4 @@ public class ApplicationConfig {
   // public AuthenticationManager authenticationManager(){
   //   return new AuthenticationManager();
   // }
-
-  @Bean
-  public ClientService clientService() {
-    return new ClientServiceImpl();
-  }
-
-  @Bean
-  public SkillsetService skillSetService(){
-    return new SkillsetServiceImpl();
-  }
 }

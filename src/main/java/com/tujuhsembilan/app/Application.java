@@ -1,8 +1,5 @@
 package com.tujuhsembilan.app;
 
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
@@ -19,11 +16,13 @@ import com.tujuhsembilan.app.repository.UserRepository;
 
 public class Application implements CommandLineRunner{
 
-	@Autowired
-	private UserRepository userRepository;
-	
-	@Autowired
-	private RoleRepository roleRepository;
+	private final UserRepository userRepository;
+	private final RoleRepository roleRepository;
+
+	public Application(UserRepository userRepository, RoleRepository roleRepository) {
+		this.userRepository = userRepository;
+		this.roleRepository = roleRepository;
+	}
 
 	public static void main(String[] args) {
 		SpringApplication.run(Application.class, args);

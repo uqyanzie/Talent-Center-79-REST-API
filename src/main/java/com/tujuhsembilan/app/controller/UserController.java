@@ -14,6 +14,9 @@ import com.tujuhsembilan.app.dto.WebResponse;
 import com.tujuhsembilan.app.dto.auth.UserRegisterRequest;
 import com.tujuhsembilan.app.dto.auth.UserRegisterResponse;
 import com.tujuhsembilan.app.service.UserService;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +25,10 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class UserController {
 
-    @Autowired
-    private UserService userService;
+    private final UserService userService;
 
     @GetMapping("api/user-management/users/")
     public ResponseEntity<SuccessResponse<List<UserResponse>>>  getAllUsers() {

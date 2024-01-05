@@ -35,28 +35,21 @@ import lib.security.BCrypt;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class AuthenticationServiceImpl implements AuthenticationService{
     
-    @Autowired
-    private ValidationService validator;
+    private final ValidationService validator;
 
-    @Autowired
-    private AuthenticationManager authenticationManager;
+    private final AuthenticationManager authenticationManager;
     
-    @Autowired
     private final UserRepository userRepository;
 
-    @Autowired
     private final ClientRepository clientRepository;
 
-    @Autowired
     private final ClientPositionRepository clientPositionRepository;
 
-    @Autowired
     private final RoleRepository roleRepository;
-
-    @Autowired
+    
     private final JWTService jwtService;
 
     @Transactional

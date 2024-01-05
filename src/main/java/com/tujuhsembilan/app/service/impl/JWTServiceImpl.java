@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.Map;
 import java.util.function.Function;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.stereotype.Service;
 
@@ -16,8 +17,10 @@ import io.jsonwebtoken.SignatureAlgorithm;
 import io.jsonwebtoken.io.Decoders;
 import io.jsonwebtoken.security.Keys;
 import lib.security.SecurityConstants;
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class JWTServiceImpl implements JWTService{
     
     public String generateToken(UserDetails userDetails){

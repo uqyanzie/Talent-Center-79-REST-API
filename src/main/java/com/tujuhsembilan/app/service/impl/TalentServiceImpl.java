@@ -1,5 +1,7 @@
 package com.tujuhsembilan.app.service.impl;
 
+import java.lang.reflect.Array;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -10,7 +12,10 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.data.jpa.domain.Specification;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.stereotype.Service;
+import org.springframework.util.ObjectUtils;
 
 import com.tujuhsembilan.app.dto.talent.PositionResponse;
 import com.tujuhsembilan.app.dto.talent.TalentLevelResponse;
@@ -21,6 +26,7 @@ import com.tujuhsembilan.app.model.Position;
 import com.tujuhsembilan.app.model.Skillset;
 import com.tujuhsembilan.app.model.Talent;
 import com.tujuhsembilan.app.model.TalentLevel;
+import com.tujuhsembilan.app.model.TalentPosition;
 import com.tujuhsembilan.app.model.TalentSkillset;
 import com.tujuhsembilan.app.repository.PositionRepository;
 import com.tujuhsembilan.app.repository.TalentLevelRepository;
@@ -32,23 +38,22 @@ import com.tujuhsembilan.app.repository.specs.SearchOperation;
 import com.tujuhsembilan.app.repository.specs.TalentSpecification;
 import com.tujuhsembilan.app.service.TalentService;
 
+import jakarta.persistence.criteria.Join;
+import lombok.RequiredArgsConstructor;
+
 @Service
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TalentServiceImpl implements TalentService {
     
-    @Autowired
-    private PositionRepository positionRepository;
+    private final PositionRepository positionRepository;
 
-    @Autowired
-    private TalentLevelRepository talentLevelRepository;
+    private final TalentLevelRepository talentLevelRepository;
 
-    @Autowired
-    private TalentRepository talentRepository;
+    private final TalentRepository talentRepository;
 
-    @Autowired
-    private TalentSkillsetRepository talentSkillsetRepository;
+    private final TalentSkillsetRepository talentSkillsetRepository;
 
-    @Autowired
-    private TalentPositionRepository talentPositionRepository;
+    private final TalentPositionRepository talentPositionRepository;
 
     public List<PositionResponse> getPositionList(){
         
@@ -70,22 +75,70 @@ public class TalentServiceImpl implements TalentService {
         return TalentYOEResponse.fromEntityList(talentYOEList);
     }
 
-    public List<TalentResponse> getTalentList(List<String> tagNames, List<String> positionNames, List<String> talentLevelNames, List<Integer> talentYOE, Integer page, Integer size, String sort, String order){
-        TalentSpecification talentSpecification = new TalentSpecification();
+    public Page<TalentResponse> getTalentPage(List<String> tagNames, List<String> positionNames, List<String> talentLevelNames, List<Integer> talentYOE, Integer pageNumber, Integer pageSize, String sort, String order){
+        
+        Specification<Talent> skillFilter = Specification.where(null);
+        Specification<Talent> positionFilter = Specification.where(null);
+        Specification<Talent> talentLevelFilter = Specification.where(null);
+        Specification<Talent> talentYOEFilter = Specification.where(null);
 
-        // Set<Skillset> skillsets = skillRepository.findBySkillsetNameIn(tagNames);
+        if(!ObjectUtils.isEmpty(tagNames)) {
+            skillFilter = (r, q, cb) -> {
+                Join<Talent, TalentSkillset> tsJoins = r.join("talentSkillsets");
+                Join<TalentSkillset, Skillset> ssJoin = tsJoins.join("skillset");
 
-        // List<TalentSkillset> talentSkillsets= talentSkillsetRepository.findBySkillsets(skillsets);
+                return ssJoin.get("skillsetName").in(Arrays.asList(tagNames.toArray()));
+            };
+        }
 
-        talentSpecification.add(new SearchCriteria("experience", 1, SearchOperation.EQUAL));
-        talentSpecification.add(new SearchCriteria("skillsetName", tagNames, SearchOperation.IN));
-        //talentSpecification.add(new SearchCriteria("talentPositions", positions, SearchOperation.IN));
+        if(!ObjectUtils.isEmpty(positionNames)) {
+            positionFilter = (r, q, cb) -> {
+                Join<Talent, TalentPosition> tpJoins = r.join("talentPositions");
+                Join<TalentPosition, Position> pJoin = tpJoins.join("position");
 
-        Pageable pageSettings = PageRequest.of(0, 10, Sort.by("experience").descending());
+                return pJoin.get("positionName").in(Arrays.asList(positionNames.toArray()));
+            };
+        }
 
-        Page<Talent> talentList = talentRepository.findAll(talentSpecification, pageSettings);
+        if(!ObjectUtils.isEmpty(talentLevelNames)) {
+            talentLevelFilter = (r, q, cb) -> {
+                Join<Talent, TalentLevel> tlJoins = r.join("talentLevel");
 
-        return TalentResponse.fromEntityList(talentList.toList());
+                return tlJoins.get("talentLevelName").in(Arrays.asList(talentLevelNames.toArray()));
+            };
+        }
+
+        if(!ObjectUtils.isEmpty(talentYOE)) {
+            talentYOEFilter = (r, q, cb) -> {
+                return r.get("experience").in(Arrays.asList(talentYOE.toArray()));
+            };
+        }
+        
+        if(sort == null) {
+            sort = "experience";
+        }
+
+        if(order == null) {
+            order = "desc";
+        }
+
+        Sort sortSettings = Sort.by(sort);
+        if (order.equals("asc")) {
+            sortSettings = sortSettings.ascending();
+        } else if (order.equals("desc")) {
+            sortSettings = sortSettings.descending();
+        } else {
+            throw new IllegalArgumentException("Invalid sort order");
+        }
+
+        Pageable pageSettings = PageRequest.of(pageNumber, pageSize, sortSettings);
+
+        Page<Talent> talentList = talentRepository.findAll(
+            Specification.where(skillFilter).and(positionFilter).and(talentLevelFilter).and(talentYOEFilter),
+            pageSettings
+        );
+
+        return TalentResponse.fromEntityPage(talentList);
     }
     
 }

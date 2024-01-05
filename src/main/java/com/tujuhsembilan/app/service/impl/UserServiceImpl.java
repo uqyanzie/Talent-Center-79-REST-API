@@ -21,24 +21,19 @@ import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 @Service
-@RequiredArgsConstructor
+@RequiredArgsConstructor(onConstructor = @__())
 public class UserServiceImpl implements UserService{
     
-    private Throwable throwable;
+    private final UserRepository userRepository;
+
     
-    private ValidationService validator;
+    private final ClientRepository clientRepository;
 
-    @Autowired
-    private UserRepository userRepository;
+    
+    private final ClientPositionRepository clientPositionRepository;
 
-    @Autowired
-    private ClientRepository clientRepository;
-
-    @Autowired
-    private ClientPositionRepository clientPositionRepository;
-
-    @Autowired
-    private RoleRepository roleRepository;
+    
+    private final RoleRepository roleRepository;
 
     @Override
     public UserDetailsService userDetailsService() {
