@@ -1,10 +1,8 @@
 package com.tujuhsembilan.app.service.impl;
 
-import java.lang.reflect.Array;
 import java.util.Arrays;
 import java.util.List;
-import java.util.Map;
-import java.util.Set;
+
 
 import org.springframework.beans.factory.annotation.Autowired;
 
@@ -13,7 +11,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.jpa.domain.Specification;
-import org.springframework.hateoas.PagedModel;
+
 import org.springframework.stereotype.Service;
 import org.springframework.util.ObjectUtils;
 
@@ -30,12 +28,7 @@ import com.tujuhsembilan.app.model.TalentPosition;
 import com.tujuhsembilan.app.model.TalentSkillset;
 import com.tujuhsembilan.app.repository.PositionRepository;
 import com.tujuhsembilan.app.repository.TalentLevelRepository;
-import com.tujuhsembilan.app.repository.TalentPositionRepository;
 import com.tujuhsembilan.app.repository.TalentRepository;
-import com.tujuhsembilan.app.repository.TalentSkillsetRepository;
-import com.tujuhsembilan.app.repository.specs.SearchCriteria;
-import com.tujuhsembilan.app.repository.specs.SearchOperation;
-import com.tujuhsembilan.app.repository.specs.TalentSpecification;
 import com.tujuhsembilan.app.service.TalentService;
 
 import jakarta.persistence.criteria.Join;
@@ -50,10 +43,6 @@ public class TalentServiceImpl implements TalentService {
     private final TalentLevelRepository talentLevelRepository;
 
     private final TalentRepository talentRepository;
-
-    private final TalentSkillsetRepository talentSkillsetRepository;
-
-    private final TalentPositionRepository talentPositionRepository;
 
     public List<PositionResponse> getPositionList(){
         
@@ -109,9 +98,7 @@ public class TalentServiceImpl implements TalentService {
         }
 
         if(!ObjectUtils.isEmpty(filterDto.getExperiences())) {
-            talentYOEFilter = (r, q, cb) -> {
-                return r.get("experience").in(Arrays.asList(filterDto.getExperiences().toArray()));
-            };
+            talentYOEFilter = (r, q, cb) -> r.get("experience").in(Arrays.asList(filterDto.getExperiences().toArray()));
         }
         
         if(filterDto.getSort() == null) {

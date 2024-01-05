@@ -16,13 +16,11 @@ import com.tujuhsembilan.app.dto.skillset.SkillsetResponse;
 import com.tujuhsembilan.app.dto.skillset.UpdateTagsCounterRequest;
 import com.tujuhsembilan.app.service.SkillsetService;
 
-import io.jsonwebtoken.lang.Objects;
 import lombok.RequiredArgsConstructor;
 
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.PathVariable;
 
 
 
@@ -70,7 +68,7 @@ public class SkillSetController {
     }
 
     @PutMapping("/api/tags-management/tags")
-    public ResponseEntity<?> updateTagsCounter(@RequestBody UpdateTagsCounterRequest request) {
+    public ResponseEntity<Object> updateTagsCounter(@RequestBody UpdateTagsCounterRequest request) {
         
         try{
             skillSetService.updateTagsCounter(request);

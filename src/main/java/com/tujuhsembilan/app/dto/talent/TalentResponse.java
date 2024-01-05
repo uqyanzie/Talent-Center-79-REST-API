@@ -1,11 +1,8 @@
 package com.tujuhsembilan.app.dto.talent;
 
 import java.util.List;
-import java.util.Set;
 
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.hateoas.PagedModel;
 
 import com.tujuhsembilan.app.dto.skillset.SkillsetResponse;
 import com.tujuhsembilan.app.model.Talent;

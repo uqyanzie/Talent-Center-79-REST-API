@@ -15,7 +15,6 @@ import com.tujuhsembilan.app.repository.ClientRepository;
 import com.tujuhsembilan.app.repository.RoleRepository;
 import com.tujuhsembilan.app.repository.UserRepository;
 import com.tujuhsembilan.app.service.UserService;
-import com.tujuhsembilan.app.service.ValidationService;
 
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

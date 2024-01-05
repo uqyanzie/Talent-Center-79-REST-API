@@ -1,7 +1,6 @@
 package com.tujuhsembilan.app.dto.talent;
 
 import java.util.List;
-import java.util.Set;
 
 import com.tujuhsembilan.app.model.Position;
 
@@ -21,11 +20,11 @@ public class PositionResponse {
     private String positionName;
 
     public static List<PositionResponse> fromEntityList(List<Position> positions) {
-        return positions.stream().map(position -> {
-            return PositionResponse.builder()
+        return positions.stream().map(position -> 
+            PositionResponse.builder()
                 .positionId(position.getPositionId().toString())
                 .positionName(position.getPositionName())
-                .build();            
-        }).toList();
+                .build()           
+        ).toList();
     }
 }

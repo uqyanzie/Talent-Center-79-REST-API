@@ -1,7 +1,6 @@
 package com.tujuhsembilan.app.model;
 
 import java.sql.Timestamp;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 

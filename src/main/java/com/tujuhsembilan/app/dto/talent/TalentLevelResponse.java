@@ -1,7 +1,6 @@
 package com.tujuhsembilan.app.dto.talent;
 
 import java.util.List;
-import java.util.Set;
 
 import com.tujuhsembilan.app.model.TalentLevel;
 
@@ -20,11 +19,11 @@ public class TalentLevelResponse {
     private String talentLevelName;
 
     public static List<TalentLevelResponse> fromEntityList(List<TalentLevel> talentLevels) {
-        return talentLevels.stream().map(talentLevel -> {
-            return TalentLevelResponse.builder()
-                .talentLevelId(talentLevel.getTalentLevelId().toString())
-                .talentLevelName(talentLevel.getTalentLevelName())
-                .build();
-        }).toList();
+        return talentLevels.stream().map(talentLevel ->  
+            TalentLevelResponse.builder()
+            .talentLevelId(talentLevel.getTalentLevelId().toString())
+            .talentLevelName(talentLevel.getTalentLevelName())
+            .build()
+        ).toList();
     }
 }

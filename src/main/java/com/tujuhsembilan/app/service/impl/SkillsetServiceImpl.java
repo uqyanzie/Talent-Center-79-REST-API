@@ -36,7 +36,7 @@ public class SkillsetServiceImpl implements SkillsetService{
     @Transactional
     public List<PopularTagsResponse> getTop5PopularTags(){
 
-        List<MostFrequentSkillset> mostFrequentSkillSets = mostFrequentSkillSetRepository.findTop5FrequentSkillSetsByOrderByCounterDesc().orElseGet(null);
+        List<MostFrequentSkillset> mostFrequentSkillSets = mostFrequentSkillSetRepository.findTop5FrequentSkillSetsByOrderByCounterDesc().orElseGet(() -> null);
 
         return PopularTagsResponse.fromEntityList(mostFrequentSkillSets);
 
