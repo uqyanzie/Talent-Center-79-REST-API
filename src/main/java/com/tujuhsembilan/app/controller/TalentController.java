@@ -1,13 +1,10 @@
 package com.tujuhsembilan.app.controller;
 
-import java.util.Arrays;
-import java.util.Collections;
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
-import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.hateoas.PagedModel;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -16,19 +13,22 @@ import org.springframework.web.server.ResponseStatusException;
 import com.tujuhsembilan.app.dto.SuccessResponse;
 import com.tujuhsembilan.app.dto.talent.PositionResponse;
 import com.tujuhsembilan.app.dto.talent.TalentLevelResponse;
-import com.tujuhsembilan.app.dto.talent.TalentListFilterDto;
 import com.tujuhsembilan.app.dto.talent.TalentResponse;
 import com.tujuhsembilan.app.dto.talent.TalentYOEResponse;
 import com.tujuhsembilan.app.service.TalentService;
+
+import lombok.RequiredArgsConstructor;
+
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
 
 @RestController
+@RequiredArgsConstructor(onConstructor = @__(@Autowired))
 public class TalentController {
     
-    @Autowired
-    private TalentService talentService;
+    
+    private final TalentService talentService;
 
     @GetMapping("/api/master-management/talent-position-option-lists")
     public ResponseEntity<SuccessResponse<List<PositionResponse>>> getTalentPositionList() {
@@ -88,49 +88,17 @@ public class TalentController {
     }
 
     @GetMapping("/api/talent-management/talents")
-    public ResponseEntity<SuccessResponse<List<TalentResponse>>> getTalentList(@RequestParam(required = false) List<String> tags, @RequestParam(required = false) List<String> positions, @RequestParam(required = false) List<String> talentLevels, @RequestParam(required = false) List<Integer> talentYOEs, @RequestParam(required = false) Integer pageSize, @RequestParam(required = false) Integer pageNumber, @RequestParam(required = false) String sort, @RequestParam(required = false) String order) {
+    public ResponseEntity<Page<TalentResponse>> getTalentList(@RequestParam(required = false) List<String> tags, @RequestParam(required = false) List<String> positions, @RequestParam(required = false) List<String> talentLevels, @RequestParam(required = false) List<Integer> experiences, @RequestParam Integer pageSize, @RequestParam Integer pageNumber, @RequestParam(required = false) String sort, @RequestParam(required = false) String order) {
         
-        // Map<String, List<String>> filter = new HashMap<String, List<String>>();
-
-        // filter.put("tags", tags);
-
-        // filter.put("positions", positions);
-
         try{
-            List<TalentResponse> response = talentService.getTalentList(tags, positions, talentLevels, talentYOEs,pageSize, pageNumber, sort, order);
+            Page<TalentResponse> response = talentService.getTalentPage(tags, positions, talentLevels, experiences, pageNumber, pageSize, sort, order);
 
-            return ResponseEntity.<SuccessResponse<List<TalentResponse>>>ok(
-            SuccessResponse.<List<TalentResponse>>builder()
-                .message(String.format("Retrieved total of %d talent", 0))
-                .status(HttpStatus.OK)
-                .data(response)
-                .build()
-            );   
+            return ResponseEntity.ok(response);
+            
         }
         catch (Exception ex) {
             throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), ex);
         }
-
-
-        // try{
-
-        //     filter.get("tags");
-
-        //     TalentListFilterDto talentListFilterDto = new TalentListFilterDto();
-
-        //     List<TalentResponse> response = talentService.getTalentList();
-
-        //     return ResponseEntity.<SuccessResponse<List<TalentResponse>>>ok(
-        //         SuccessResponse.<List<TalentResponse>>builder()
-        //             .message(String.format("Retrieved total of %d talent", response.size()))
-        //             .status(HttpStatus.OK)
-        //             .data(response)
-        //             .build()
-        //     );
-        // }
-        // catch (Exception ex) {
-        //     throw new ResponseStatusException(HttpStatus.BAD_REQUEST, ex.getLocalizedMessage(), ex);
-        // }
         
     }
 

@@ -77,11 +77,11 @@ public class Talent {
 
     private String biographyVideoUrl;
 
-    private boolean isAddToListEnable;
+    private Boolean isAddToListEnable;
 
-    private boolean talentAvailability;
+    private Boolean talentAvailability;
 
-    private boolean isActive;
+    private Boolean isActive;
 
     private Integer totalProjectCompleted;
 
